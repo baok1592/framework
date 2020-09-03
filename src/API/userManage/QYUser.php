@@ -63,6 +63,7 @@ class QYUser
     public function getYzm($post)
     {
         $yzm_tmp_id=SysConfig::where('key','yzm_tmp_id')->value('value');
+        //$yzm_tmp_id=SysConfig::where('key','yzm_tmp_id')->value('value');
         if(!$yzm_tmp_id){
             throw new BaseException(['msg'=>"未配置短信接口"]);
         }

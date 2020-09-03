@@ -8,7 +8,7 @@
 
 namespace ruhua\services;
 
-use app\model\User as UserModel;
+use ruhua\model\User as UserModel;
 use think\facade\Log;
 
 class MergeService

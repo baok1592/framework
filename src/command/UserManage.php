@@ -26,8 +26,8 @@ class UserManage extends Command
         }
         else {
             if (Db::name('sys_config')->select()) {
-                copy(__DIR__ . '\..\data\Pay.php', __DIR__ . '/../../../../../app/controller/Pay.php');
-                $output->writeln('支付演示');
+                copy(__DIR__ . '\..\data\User.php', __DIR__ . '/../../../../../app/controller/User.php');
+                $output->writeln('创建用户管理成功');
             }
             else {
                 $vaethink_sql = file_get_contents(__DIR__ . '\..\data\rh.sql');

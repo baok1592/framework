@@ -4,7 +4,7 @@ namespace ruhua\services;
 
 
 
-use app\model\User as UserModel;
+use ruhua\model\User as UserModel;
 use ruhua\exceptions\BaseException;
 use ruhua\exceptions\TokenException;
 use think\facade\Cache;

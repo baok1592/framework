@@ -9,7 +9,7 @@
 namespace ruhua\utils;
 
 
-use app\model\SysConfig;
+use ruhua\model\SysConfig;
 
 class System
 {
