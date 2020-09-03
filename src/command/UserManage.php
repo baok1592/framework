@@ -25,7 +25,8 @@ class UserManage extends Command
             $output->writeln('文件已经存在');
         }
         else {
-            if (Db::name('sys_config')->select()) {
+        $res=Db::query("SHOW TABLES LIKE 'sys_config'");
+            if (count($res)) {
                 copy(__DIR__ . '\..\data\User.php', __DIR__ . '/../../../../../app/controller/User.php');
                 $output->writeln('创建用户管理成功');
             }
@@ -37,7 +38,8 @@ class UserManage extends Command
                         Db::execute($v);
                     }
                 }
-                if (Db::name('sys_config')->select()) {
+                $res=Db::query("SHOW TABLES LIKE 'sys_config'");
+                if (count($res)) {
                     copy(__DIR__ . '\..\data\User.php', __DIR__ . '/../../../../../app/controller/User.php');
                     $output->writeln('一键创建用户管理');
                 } else
