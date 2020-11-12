@@ -7,7 +7,6 @@
  * Time: 14:46
  */
 namespace ruhua\API\pay;
-
 use ruhua\services\AliPayService;
 use ruhua\services\PayService;
 use GzhPay\JsApi;

@@ -18,7 +18,7 @@ class CreateModel extends Command
     {
         // 指令配置
         $this->setName('createmodel')
-            ->setDescription('一键创建数据模型');
+            ->setDescription('the createmodel command');        
     }
 
     protected function execute(Input $input, Output $output)

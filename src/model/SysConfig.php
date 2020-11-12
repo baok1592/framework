@@ -13,7 +13,6 @@ use ruhua\bases\BaseModel;
 
 class SysConfig extends BaseModel
 {
-    protected $table='sys_config';
 
     protected function setCreateTimeAttr($value)
     {

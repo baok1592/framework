@@ -17,7 +17,6 @@ use WxCode\demoWxCode;
 
 class User extends BaseModel
 {
-    protected $table='user';
 
     /**
      * 获取所有用户信息

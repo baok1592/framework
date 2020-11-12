@@ -37,7 +37,8 @@ class ExceptionHandle extends Handle
         $result = [
             'msg' => $this->msg,
             'error_code' => $this->errorCode,
-            'request_url' => Request::url()   //获取当前访问的URL
+            //'request_url' => Request::url()   //获取当前访问的URL
+            "file"=>$e->getFile().$e->getLine(),
         ];
         return json($result, $this->code);
 

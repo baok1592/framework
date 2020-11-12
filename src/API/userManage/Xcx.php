@@ -2,8 +2,8 @@
 
 namespace ruhua\API\userManage;
 
-use ruhua\model\SysConfig as SysConfigModel;
-use ruhua\model\User as UserModel;
+use app\model\SysConfig as SysConfigModel;
+use app\model\User as UserModel;
 use ruhua\services\TokenService;
 use ruhua\services\MergeService;
 use ruhua\bases\BaseCommon;

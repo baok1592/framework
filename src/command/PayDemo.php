@@ -24,10 +24,9 @@ class PayDemo extends Command
             $output->writeln('文件已经存在');
         }
         else {
-            $res=Db::query("SHOW TABLES LIKE 'sys_config'");
-            if (count($res)) {
+            if (Db::name('sys_config')->select()) {
                 copy(__DIR__ . '\..\data\Pay.php', __DIR__ . '/../../../../../app/controller/Pay.php');
-                $output->writeln('创建支付演示');
+                $output->writeln('支付演示');
             }
             else {
                 $vaethink_sql = file_get_contents(__DIR__ . '\..\data\rh.sql');
@@ -37,10 +36,9 @@ class PayDemo extends Command
                         Db::execute($v);
                     }
                 }
-                $res=Db::query("SHOW TABLES LIKE 'sys_config'");
-                if (count($res)) {
+                if (Db::name('sys_config')->select()) {
                     copy(__DIR__ . '\..\data\Pay.php', __DIR__ . '/../../../../../app/controller/Pay.php');
-                    $output->writeln('创建支付演示');
+                    $output->writeln('支付演示');
                 } else
                     $output->writeln('导入数据表错误');
             }

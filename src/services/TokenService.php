@@ -4,11 +4,12 @@ namespace ruhua\services;
 
 
 
-use ruhua\model\User as UserModel;
+use app\model\User as UserModel;
 use ruhua\exceptions\BaseException;
 use ruhua\exceptions\TokenException;
 use think\facade\Cache;
 use think\facade\Request;
+use Firebase\JWT;
 
 //API的token文件，用于：生成token、
 class TokenService
@@ -20,37 +21,27 @@ class TokenService
         $this->tokenExpire = config('setting.token_expire_in'); //token缓存有效时间
     }
 
-    //生成随机token
-    public static function generateToken()
-    {
-        //32个字符组成一组随机字符串
-        $randChars = self::getRandChar(32);
-        //用三组字符串，进行md5加密
-        $timestamp = $_SERVER['REQUEST_TIME_FLOAT'];
-        //salt 盐
-        $salt = config('secure.token_salt');
-        return md5($randChars . $timestamp . $salt);
-    }
 
     //通过token获取该条缓存数据中指定的字段
-    public static function getCurrentTokenVar($key)
+    public static function getCurrentTokenVar($key1)
     {
-        $token = Request::header('token');
-        if (!$token) {
-            throw new TokenException();
-        }
-        $vars = Cache::get($token);
-        if (!$vars) {
-            throw new TokenException();
-        } else {
-            if (!is_array($vars)) {
-                $vars = json_decode($vars, true);
-            }
-            if (array_key_exists($key, $vars)) {
-                return $vars[$key];
-            } else {
-                throw new TokenException(['msg' => '尝试获取的变量并不存在']);
-            }
+        $token=Request::header('token');
+        $key = '344'; //key要和签发的时候一样，唯一标识
+        try {
+            JWT\JWT::$leeway = 60;//当前时间减去60，把时间留点余地
+            $decoded = JWT\JWT::decode($token, $key, ['HS256']); //HS256方式，这里要和签发的时候对应
+            $arr = (array)$decoded;
+            $res=json_decode(json_encode($arr['data']), true);
+            //dump($res);
+            return $res[$key1];
+        } catch(\Firebase\JWT\SignatureInvalidException $e) {  //签名不正确
+            throw new TokenException(['msg'=>'签名不正确']);
+        }catch(\Firebase\JWT\BeforeValidException $e) {  // 签名在某个时间点之后才能用
+            throw new TokenException(['msg'=>'签名在某个时间点之后才能用']);
+        }catch(\Firebase\JWT\ExpiredException $e) {  // token过期
+            throw new TokenException(['msg'=>'token过期']);
+        }catch(\Exception $e) {  //其他错误
+            throw new TokenException(['msg'=>'获取的值不存在！'.$e->getMessage()]);
         }
     }
 
@@ -76,37 +67,35 @@ class TokenService
     //放入缓存
     public function saveCache($cachedValue)
     {
-        $key = self::generateToken();//生成token
-        $value = json_encode($cachedValue);
-        $request = cache($key, $value, $this->tokenExpire);//第三参数是时效期
-//        $request = cache($key, $value);//第三参数是时效期
-        if (!$request) {
-            throw new TokenException(['msg' => '服务器缓存异常']);
-        }
-        return $key;
-    }
-
-    //生成token函数中调用的，生成随机字符串
-    private static function getRandChar($length)
-    {
-        $str = null;
-        $strPol = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
-        $max = strlen($strPol) - 1;
-        for ($i = 0;
-             $i < $length;
-             $i++) {
-            $str .= $strPol[rand(0, $max)];
-        }
-        return $str;
+        $key = '344'; //key，唯一标识
+        $time = time(); //当前时间
+        $token = [
+            'iat' => $time, //签发时间
+            'nbf' => $time , //(Not Before)：某个时间点后才能访问，比如设置time+30，表示当前时间30秒后才能使用
+            'exp' => $time+7200, //过期时间,这里设置2个小时
+            'data' => $cachedValue
+        ];
+        $token = JWT\JWT::encode($token, $key,'HS256'); //签发token
+        //Cache::put($token,$data);
+        return $token;
     }
 
     //验证toen
     public static function verifyToken($token)
     {
-        $exist = Cache::get($token);
-        if ($exist) {
+        $key = '344'; //key要和签发的时候一样，唯一标识
+        try {
+            JWT\JWT::$leeway = 60;//当前时间减去60，把时间留点余地
+            $decoded = JWT\JWT::decode($token, $key, ['HS256']); //HS256方式，这里要和签发的时候对应
+            $arr = (array)$decoded;
             return true;
-        } else {
+        } catch(\Firebase\JWT\SignatureInvalidException $e) {  //签名不正确
+            return false;
+        }catch(\Firebase\JWT\BeforeValidException $e) {  // 签名在某个时间点之后才能用
+            return false;
+        }catch(\Firebase\JWT\ExpiredException $e) {  // token过期
+            return false;
+        }catch(\Exception $e) {  //其他错误
             return false;
         }
     }
@@ -126,7 +115,7 @@ class TokenService
     //通过token获取uid
     public static function getCurrentUid()
     {
-        $uid = self::getCurrentTokenVar('id');
+        $uid = self::getCurrentTokenVar('uid');
         $user = UserModel::find($uid);
         if (!$user) {
             throw new BaseException(['msg' => '无该用户信息']);

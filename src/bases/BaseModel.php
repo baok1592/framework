@@ -17,7 +17,7 @@ class  BaseModel extends Model
 
     public function getCreateTimeAttr($v)
     {
-        return date("Y-m-d",$v);
+        return date("Y-m-d",strtotime($v));
     }
-    
+
 }
