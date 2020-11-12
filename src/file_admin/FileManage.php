@@ -4,9 +4,9 @@
 namespace ruhua\fileManage;
 
 
-use app\model\File as FileModel;
-use app\model\SysConfig;
-use app\controller\cms\Oss;
+use ruhua\model\File as FileModel;
+use ruhua\model\SysConfig;
+use ruhua\file_admin\oss\OSS;
 use ruhua\exceptions\BaseException;
 use think\facade\Filesystem;
 use think\facade\Log;

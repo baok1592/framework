@@ -6,7 +6,7 @@ namespace ruhua\msg\News;
 
 use ruhua\msg\News\CacheNews;
 use ruhua\bases\BaseController;
-use app\model\News as NewsModel;
+use ruhua\model\News as NewsModel;
 
 class News extends BaseController
 {

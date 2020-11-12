@@ -3,7 +3,7 @@
 
 namespace ruhua\file_admin\oss;
 
-use app\model\SysConfig;
+use ruhua\model\SysConfig;
 use OSS\OssClient;
 use OSS\Core\OssException;
 use ruhua\exceptions\BaseException;
