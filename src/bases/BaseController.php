@@ -1,13 +1,12 @@
 <?php
 declare (strict_types = 1);
 
-namespace ruhua\bases;
+namespace  ruhua\bases;
 
 
-use ruhua\exceptions\BaseException;
+use exceptions\BaseException;
 use think\App;
 use think\exception\ValidateException;
-use think\facade\Log;
 use think\Validate;
 
 /**
@@ -69,8 +68,6 @@ abstract class BaseController
      */
     protected function validate(array $data, $validate, array $message = [], bool $batch = false)
     {
-
-
         if (is_array($validate)) {
             $v = new Validate();
             $v->rule($validate);
@@ -92,10 +89,8 @@ abstract class BaseController
         if ($batch || $this->batchValidate) {
             $v->batch(true);
         }
-
         $result=$v->check($data);
         if (!$result){
-
             throw new BaseException(['msg' => $v->getError()]);
         }else{
             return true;

@@ -1,5 +1,5 @@
 <?php
-namespace ruhua\exceptions;
+namespace  ruhua\exceptions;
 
 use think\exception\Handle;
 use think\facade\Env;
@@ -37,8 +37,7 @@ class ExceptionHandle extends Handle
         $result = [
             'msg' => $this->msg,
             'error_code' => $this->errorCode,
-            //'request_url' => Request::url()   //获取当前访问的URL
-            "file"=>$e->getFile().$e->getLine(),
+            'request_url' => Request::url()   //获取当前访问的URL
         ];
         return json($result, $this->code);
 

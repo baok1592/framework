@@ -6,7 +6,7 @@ namespace ruhua\msg\News;
 
 use ruhua\msg\News\CacheNews;
 use ruhua\bases\BaseController;
-use ruhua\model\News as NewsModel;
+use app\model\News as NewsModel;
 
 class News extends BaseController
 {
@@ -18,7 +18,7 @@ class News extends BaseController
         $da= input('get.');
         $data = [
            'uid'=>$da['uid'],
-           'msg'=> $da['msg'],。
+           'msg'=> $da['msg'],
         ];
         $res = NewsModel::create($data);
         return app('json')->go($res);

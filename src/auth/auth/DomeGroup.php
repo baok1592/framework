@@ -3,10 +3,10 @@
 
 namespace app\controller\cms;
 
-use ruhua\model\AuthGroup as GroupModel;
-use ruhua\auth\GroupValidate;
-use ruhua\auth\IDPostiveInt;
-use ruhua\auth\Auth;
+use app\model\AuthGroup as GroupModel;
+use app\validate\GroupValidate;
+use app\validate\IDPostiveInt;
+use qy\auth\Auth;
 use ruhua\exceptions\BaseException;
 use ruhua\bases\BaseController;
 

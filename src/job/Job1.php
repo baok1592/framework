@@ -1,5 +1,5 @@
 <?php
-namespace ruhua\job;
+namespace  ruhua\job;
 
 use think\queue\Job;
 

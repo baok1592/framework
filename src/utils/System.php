@@ -6,10 +6,10 @@
  * Time: 11:16
  */
 
-namespace ruhua\utils;
+namespace  ruhua\utils;
 
 
-use ruhua\model\SysConfig;
+use app\model\SysConfig;
 
 class System
 {

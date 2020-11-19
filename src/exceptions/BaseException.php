@@ -1,6 +1,6 @@
 <?php
 
-namespace ruhua\exceptions;
+namespace  ruhua\exceptions;
 
 
 use think\Exception;
